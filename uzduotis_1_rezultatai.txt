@@ -1,0 +1,7 @@
++------------+-------+---------+---------+
+| Name | Color | Element | Likes |
++------------+-------+---------+---------+
+| Trikse | Green | Earth | Flowers |
+| Vardenis | Blue | Air | Singing |
+| Jonas | Pink | Water | Dancing |
++------------+-------+---------+---------+
