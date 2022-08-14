@@ -7,7 +7,14 @@ $file = fread($myfile,filesize(trim($line)));
 
 $searchForSymbols = array("array", "(", ")", "'","\r\n",";"," ");
 $rawParsedDataFromFile = explode(',',str_replace($searchForSymbols, '', $file));
-print_r($rawParsedDataFromFile);
+unset($rawParsedDataFromFile[sizeof($rawParsedDataFromFile)-1]);
+//print_r($rawParsedDataFromFile);
+
+
+
+
+
+
 
 function getHeader(): array {
     $arrHeader = [];
@@ -20,7 +27,20 @@ function getHeader(): array {
     return $headerFull;
 }
 
+function getFileDataArray(): array {
+    $sortedWholeFileArray = [];
 
+    foreach($headerFull as $it){
+        array_push($sortedWholeFileArray,$it);
+        foreach($rawParsedDataFromFile as $item){
+            $singleParsedDataLine = explode('=>',$item);
+            if($singleParsedDataLine[0]==$it){
+            array_push($sortedWholeFileArray,$singleParsedDataLine[1]);
+            }
+        }
+    }
+    return $sortedWholeFileArray;
+}
 
 
 
