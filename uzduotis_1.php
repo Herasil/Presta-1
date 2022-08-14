@@ -1,19 +1,12 @@
 <?php
 
-use function PHPSTORM_META\type;
-
 print_r("Įveskite failo pavadinimą:");
 $handle = fopen("php://stdin", "r");
 $line = fgets($handle);
-$myfile = fopen(trim($line), "r") or die("Nepavyko atidaryti failo!");
-$file = fread($myfile, filesize(trim($line)));
-$searchForSymbols = array("array", "(", ")", "'", "\r\n", ";", " ");
-$rawParsedDataFromFile = explode(',', str_replace($searchForSymbols, '', $file));
-unset($rawParsedDataFromFile[sizeof($rawParsedDataFromFile) - 1]);
 
-$totalVariablesCount = sizeof(getFileDataArray($rawParsedDataFromFile)) / sizeof(getHeader($rawParsedDataFromFile));
+$totalVariablesCount = sizeof(getFileDataArray(getDataFromFile($line))) / sizeof(getHeader(getDataFromFile($line)));
 
-printDataArrayTable(getFileDataArray($rawParsedDataFromFile), $totalVariablesCount);
+printDataArrayTable(getFileDataArray(getDataFromFile($line)), $totalVariablesCount);
 
 
 function getHeader($rawParsedDataFromFile): array
@@ -65,4 +58,12 @@ function printDataArrayTable($sortedWholeFileArray, $totalVariablesCount): void
     print_r("\n+------------+-------+---------+---------+\n");
 }
 
-function getDataFromFile(){}
+function getDataFromFile($line): array
+{
+    $myfile = fopen(trim($line), "r") or die("Nepavyko atidaryti failo!");
+    $file = fread($myfile, filesize(trim($line)));
+    $searchForSymbols = array("array", "(", ")", "'", "\r\n", ";", " ");
+    $rawParsedDataFromFile = explode(',', str_replace($searchForSymbols, '', $file));
+    unset($rawParsedDataFromFile[sizeof($rawParsedDataFromFile) - 1]);
+    return $rawParsedDataFromFile;
+}
