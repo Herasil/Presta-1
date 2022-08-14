@@ -10,13 +10,15 @@ $rawParsedDataFromFile = explode(',',str_replace($searchForSymbols, '', $file));
 unset($rawParsedDataFromFile[sizeof($rawParsedDataFromFile)-1]);
 //print_r($rawParsedDataFromFile);
 
+$totalVariablesCount = sizeof(getFileDataArray($rawParsedDataFromFile))/sizeof(getHeader($rawParsedDataFromFile));
+
+printDataArrayTable(getFileDataArray($rawParsedDataFromFile),$totalVariablesCount);
 
 
 
 
 
-
-function getHeader(): array {
+function getHeader($rawParsedDataFromFile): array {
     $arrHeader = [];
     foreach($rawParsedDataFromFile as $item){
         $singleParsedDataLine = explode('=>',$item);
@@ -27,10 +29,10 @@ function getHeader(): array {
     return $headerFull;
 }
 
-function getFileDataArray(): array {
+function getFileDataArray($rawParsedDataFromFile): array {
     $sortedWholeFileArray = [];
 
-    foreach($headerFull as $it){
+    foreach(getHeader($rawParsedDataFromFile) as $it){
         array_push($sortedWholeFileArray,$it);
         foreach($rawParsedDataFromFile as $item){
             $singleParsedDataLine = explode('=>',$item);
@@ -42,6 +44,20 @@ function getFileDataArray(): array {
     return $sortedWholeFileArray;
 }
 
+function printDataArrayTable($sortedWholeFileArray, $totalVariablesCount) {
+    $variablesCheckCount=0;
+    for($i=0;$i<=sizeof($sortedWholeFileArray)+2;$i+=$totalVariablesCount){
+        if($variablesCheckCount==$totalVariablesCount){
+            $i-=sizeof($sortedWholeFileArray)-1;
+            $variablesCheckCount=0;
+            print_r("\n");
+        }
+        print_r($sortedWholeFileArray[$i]);
+        if($i==sizeof($sortedWholeFileArray)-$totalVariablesCount){
+        }
+        $variablesCheckCount++;
+    }
+}
 
 
 
