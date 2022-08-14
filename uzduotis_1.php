@@ -1,6 +1,8 @@
 <?php
-
 declare(strict_types=1);
+include('./Services/Printer.php');
+include('./Services/AssociativeArrayParser.php');
+include('./Services/FileReader.php');
 
 print_r("Įveskite failo pavadinimą:");
 $handle = fopen("php://stdin", "r");
