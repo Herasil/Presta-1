@@ -4,18 +4,13 @@ $handle = fopen ("php://stdin","r");
 $line = fgets($handle);
 $myfile = fopen(trim($line), "r") or die("Nepavyko atidaryti failo!");
 $file = fread($myfile,filesize(trim($line)));
-
 $searchForSymbols = array("array", "(", ")", "'","\r\n",";"," ");
 $rawParsedDataFromFile = explode(',',str_replace($searchForSymbols, '', $file));
 unset($rawParsedDataFromFile[sizeof($rawParsedDataFromFile)-1]);
-//print_r($rawParsedDataFromFile);
 
 $totalVariablesCount = sizeof(getFileDataArray($rawParsedDataFromFile))/sizeof(getHeader($rawParsedDataFromFile));
 
 printDataArrayTable(getFileDataArray($rawParsedDataFromFile),$totalVariablesCount);
-
-
-
 
 
 function getHeader($rawParsedDataFromFile): array {
@@ -46,17 +41,22 @@ function getFileDataArray($rawParsedDataFromFile): array {
 
 function printDataArrayTable($sortedWholeFileArray, $totalVariablesCount) {
     $variablesCheckCount=0;
+    print_r("+------------+-------+---------+---------+\n");
+    print_r("| ");
     for($i=0;$i<=sizeof($sortedWholeFileArray)+2;$i+=$totalVariablesCount){
         if($variablesCheckCount==$totalVariablesCount){
             $i-=sizeof($sortedWholeFileArray)-1;
             $variablesCheckCount=0;
-            print_r("\n");
+            print_r("\n| ");
         }
         print_r($sortedWholeFileArray[$i]);
+        print_r(" | ");
         if($i==sizeof($sortedWholeFileArray)-$totalVariablesCount){
+            print_r("\n+------------+-------+---------+---------+");
         }
         $variablesCheckCount++;
     }
+    print_r("\n+------------+-------+---------+---------+\n");
 }
 
 
